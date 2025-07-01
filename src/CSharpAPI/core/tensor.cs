@@ -312,6 +312,61 @@ namespace OpenVinoSharp
             }
         }
 
+
+        /// <summary>
+        /// Load the byte type of data into the underlying host memory.
+        /// </summary>
+        /// <param name="input_data">Data to be loaded.</param>
+        public void set_data(byte[] input_data)
+        {
+            set_data<byte>(input_data);
+        }
+
+        /// <summary>
+        /// Load the int type of data into the underlying host memory.
+        /// </summary>
+        /// <param name="input_data">Data to be loaded.</param>
+        public void set_data(int[] input_data)
+        {
+            set_data<int>(input_data);
+        }
+
+        /// <summary>
+        /// Load the long type of data into the underlying host memory.
+        /// </summary>
+        /// <param name="input_data">Data to be loaded.</param>
+        public void set_data(long[] input_data)
+        {
+            set_data<long>(input_data);
+        }
+
+        /// <summary>
+        /// Load the short type of data into the underlying host memory.
+        /// </summary>
+        /// <param name="input_data">Data to be loaded.</param>
+        public void set_data(short[] input_data)
+        {
+            set_data<short>(input_data);
+        }
+
+        /// <summary>
+        /// Load the float type of data into the underlying host memory.
+        /// </summary>
+        /// <param name="input_data">Data to be loaded.</param>
+        public void set_data(float[] input_data)
+        {
+            set_data<float>(input_data);
+        }
+
+        /// <summary>
+        /// Load the double type of data into the underlying host memory.
+        /// </summary>
+        /// <param name="input_data">Data to be loaded.</param>
+        public void set_data(double[] input_data)
+        {
+            set_data<double>(input_data);
+        }
+
         /// <summary>
         /// Read data of the specified type from the underlying host memory.
         /// </summary>
@@ -373,6 +428,76 @@ namespace OpenVinoSharp
                 Console.WriteLine("Data format error, not supported. Only double, flaot, int, long, shaort and byte data formats are supported");
                 return result;
             }
+
+        }
+
+
+        /// <summary>
+        /// Read data of the byte type from the underlying host memory.
+        /// </summary>
+        /// <param name="length">The length of the read data.</param>
+        /// <returns>Read data.</returns>
+        public byte[] get_byte_data(int length)
+        {
+            return get_data<byte>(length);
+
+        }
+
+        /// <summary>
+        /// Read data of the int type from the underlying host memory.
+        /// </summary>
+        /// <param name="length">The length of the read data.</param>
+        /// <returns>Read data.</returns>
+        public int[] get_int_data(int length)
+        {
+            return get_data<int>(length);
+
+        }
+
+        /// <summary>
+        /// Read data of the long type from the underlying host memory.
+        /// </summary>
+        /// <param name="length">The length of the read data.</param>
+        /// <returns>Read data.</returns>
+        public long[] get_long_data(int length)
+        {
+            return get_data<long>(length);
+
+        }
+
+
+        /// <summary>
+        /// Read data of the short type from the underlying host memory.
+        /// </summary>
+        /// <param name="length">The length of the read data.</param>
+        /// <returns>Read data.</returns>
+        public short[] get_short_data(int length)
+        {
+            return get_data<short>(length);
+
+        }
+
+
+        /// <summary>
+        /// Read data of the float type from the underlying host memory.
+        /// </summary>
+        /// <param name="length">The length of the read data.</param>
+        /// <returns>Read data.</returns>
+        public float[] get_float_data(int length)
+        {
+            return get_data<float>(length);
+
+        }
+
+
+        /// <summary>
+        /// Read data of the double type from the underlying host memory.
+        /// </summary>
+        /// <param name="length">The length of the read data.</param>
+        /// <returns>Read data.</returns>
+        public double[] get_double_data(int length)
+        {
+            return get_data<double>(length);
 
         }
 
