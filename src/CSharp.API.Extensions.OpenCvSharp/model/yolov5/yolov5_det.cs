@@ -86,7 +86,7 @@ namespace OpenVinoSharp.Extensions.model
             List<DetResult> re_result = new List<DetResult>();
             for (int b = 0; b < batch; ++b)
             {
-                Mat result_data = new Mat( 25200, 5 + m_categ_nums, MatType.CV_32F,
+                Mat result_data = Mat.FromPixelData(25200, 5 + m_categ_nums, MatType.CV_32F,
                     Marshal.UnsafeAddrOfPinnedArrayElement(result, (5 + m_categ_nums) * m_output_length * b * 4), 4 * (5 + m_categ_nums));
                 //result_data = result_data.T();
 

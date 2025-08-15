@@ -97,7 +97,7 @@ namespace OpenVinoSharp.Extensions.model
             List<SegResult> re_results = new List<SegResult>();
             for (int beg_img_no = 0; beg_img_no < images.Count; beg_img_no += m_batch_num)
             {
-                
+
                 int end_img_no = Math.Min(images.Count, beg_img_no + m_batch_num);
                 int batch_num = end_img_no - beg_img_no;
                 List<Mat> norm_img_batch = new List<Mat>();
@@ -138,11 +138,11 @@ namespace OpenVinoSharp.Extensions.model
         public List<SegResult> process_result(float[] detect, float[] proto, int batch)
         {
             List<SegResult> re_result = new List<SegResult>();
-            for (int b = 0; b < batch; ++b) 
+            for (int b = 0; b < batch; ++b)
             {
-                Mat detect_data = new Mat(36 + m_categ_nums, m_output_length, MatType.CV_32FC1,
+                Mat detect_data = Mat.FromPixelData(36 + m_categ_nums, m_output_length, MatType.CV_32FC1,
                      Marshal.UnsafeAddrOfPinnedArrayElement(detect, (4 + m_categ_nums) * m_output_length * b * 4));
-                Mat proto_data = new Mat(32, 25600, MatType.CV_32F, proto);
+                Mat proto_data = Mat.FromPixelData(32, 25600, MatType.CV_32F, proto);
                 detect_data = detect_data.T();
                 List<Rect> position_boxes = new List<Rect>();
                 List<int> class_ids = new List<int>();
@@ -189,7 +189,7 @@ namespace OpenVinoSharp.Extensions.model
                 CvDnn.NMSBoxes(position_boxes, confidences, this.m_det_thresh, this.m_det_nms_thresh, out indexes);
 
                 SegResult re = new SegResult(); // Output Result Class
-                                                       // RGB images with colors
+                                                // RGB images with colors
                 Mat rgb_mask = Mat.Zeros(new Size((int)m_image_sizes[b].Width, (int)m_image_sizes[b].Height), MatType.CV_8UC3);
                 Random rd = new Random(); // Generate Random Numbers
                 for (int i = 0; i < indexes.Length; i++)

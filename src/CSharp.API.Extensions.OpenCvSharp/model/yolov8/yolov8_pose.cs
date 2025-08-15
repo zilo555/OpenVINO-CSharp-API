@@ -19,7 +19,7 @@ namespace OpenVinoSharp.Extensions.model
         private int m_batch_num;
         private int m_output_length;
 
-        public Yolov8Pose(string model_path, string? device = null, bool? use_gpu = null,long[]? input_size = null, 
+        public Yolov8Pose(string model_path, string? device = null, bool? use_gpu = null, long[]? input_size = null,
             int? batch_num = null, string? cache_dir = null, float? det_thresh = null, float? det_nms_thresh = null)
             : base(model_path, device ?? Yolov8PoseOption.device, cache_dir ?? Yolov8PoseOption.cache_dir,
                   use_gpu ?? Yolov8PoseOption.use_gpu, input_size ?? Yolov8PoseOption.input_size)
@@ -91,7 +91,7 @@ namespace OpenVinoSharp.Extensions.model
             List<PoseResult> re_result = new List<PoseResult>();
             for (int b = 0; b < batch; ++b)
             {
-                Mat result_data = new Mat(56, m_output_length, MatType.CV_32FC1,
+                Mat result_data = Mat.FromPixelData(56, m_output_length, MatType.CV_32FC1,
                     Marshal.UnsafeAddrOfPinnedArrayElement(result, 56 * m_output_length * b * 4));
                 result_data = result_data.T();
                 List<Rect> position_boxes = new List<Rect>();
@@ -118,7 +118,7 @@ namespace OpenVinoSharp.Extensions.model
                         Mat pose_mat = new Mat(result_data, new Rect(5, i, 51, 1));//result_data.Row(i).ColRange(5, 56);
                         IntPtr pt = pose_mat.Data;
                         float[] pose_data = new float[51];
-                        Marshal.Copy(pt,pose_data,0,pose_data.Length);
+                        Marshal.Copy(pt, pose_data, 0, pose_data.Length);
                         PosePoint pose = new PosePoint(pose_data, this.m_factors[b]);
 
                         position_boxes.Add(box);
@@ -140,7 +140,7 @@ namespace OpenVinoSharp.Extensions.model
                 }
                 re_result.Add(re);
             }
-         
+
             return re_result;
 
         }

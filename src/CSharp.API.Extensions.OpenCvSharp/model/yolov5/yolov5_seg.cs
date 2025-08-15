@@ -119,9 +119,9 @@ namespace OpenVinoSharp.Extensions.model
             List<SegResult> re_result = new List<SegResult>();
             for (int b = 0; b < batch; ++b)
             {
-                Mat detect_data = new Mat(m_output_length, 37 + m_categ_nums, MatType.CV_32FC1,
+                Mat detect_data = Mat.FromPixelData(m_output_length, 37 + m_categ_nums, MatType.CV_32FC1,
                      Marshal.UnsafeAddrOfPinnedArrayElement(detect, (4 + m_categ_nums) * m_output_length * b * 4));
-                Mat proto_data = new Mat(32, 25600, MatType.CV_32F, proto);
+                Mat proto_data = Mat.FromPixelData(32, 25600, MatType.CV_32F, proto);
                 //detect_data = detect_data.T();
                 List<Rect> position_boxes = new List<Rect>();
                 List<int> class_ids = new List<int>();
@@ -187,7 +187,7 @@ namespace OpenVinoSharp.Extensions.model
 
                     // Segmentation results
                     Mat original_mask = masks[index] * proto_data;
-                  
+
                     for (int col = 0; col < original_mask.Cols; col++)
                     {
                         original_mask.Set<float>(0, col, sigmoid(original_mask.At<float>(0, col)));
@@ -238,7 +238,7 @@ namespace OpenVinoSharp.Extensions.model
                     }
                     // Obtain segmentation area
                     Mat mask = Mat.Zeros(new Size((int)m_image_sizes[b].Width, (int)m_image_sizes[b].Height), MatType.CV_8UC1);
-                    
+
                     bin_mask = new Mat(bin_mask, new OpenCvSharp.Range(0, box_y2 - box_y1), new OpenCvSharp.Range(0, box_x2 - box_x1));
                     Rect roi = new Rect(box_x1, box_y1, box_x2 - box_x1, box_y2 - box_y1);
                     bin_mask.CopyTo(new Mat(mask, roi));

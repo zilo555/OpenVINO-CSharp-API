@@ -27,10 +27,10 @@ namespace OpenVinoSharp.Extensions.model
         private int m_batch_num;
 
         public Yolov8Det(string model_path, string? device = null, int? categ_nums = null, bool? use_gpu = null,
-            long[]? input_size = null, int? batch_num = null,string? cache_dir = null, float? det_thresh = null,
+            long[]? input_size = null, int? batch_num = null, string? cache_dir = null, float? det_thresh = null,
             float? det_nms_thresh = null)
-            : base(model_path, device??Yolov8DetOption.device, cache_dir??Yolov8DetOption.cache_dir,
-                  use_gpu?? Yolov8DetOption.use_gpu,input_size??Yolov8DetOption.input_size)
+            : base(model_path, device ?? Yolov8DetOption.device, cache_dir ?? Yolov8DetOption.cache_dir,
+                  use_gpu ?? Yolov8DetOption.use_gpu, input_size ?? Yolov8DetOption.input_size)
         {
             m_categ_nums = categ_nums ?? Yolov8DetOption.categ_nums;
             m_det_thresh = det_thresh ?? Yolov8DetOption.det_thresh;
@@ -44,8 +44,8 @@ namespace OpenVinoSharp.Extensions.model
             m_batch_num = batch_num ?? Yolov8DetOption.batch_num;
         }
 
-        public Yolov8Det(Yolov8DetConfig config) 
-            : base(config.model_path, config.device, config.cache_dir ,config.use_gpu, config.input_size)
+        public Yolov8Det(Yolov8DetConfig config)
+            : base(config.model_path, config.device, config.cache_dir, config.use_gpu, config.input_size)
         {
             m_categ_nums = config.categ_nums;
             m_det_thresh = config.det_thresh;
@@ -74,7 +74,7 @@ namespace OpenVinoSharp.Extensions.model
         public List<DetResult> predict(List<Mat> images)
         {
             List<DetResult> re_results = new List<DetResult>();
-            for (int beg_img_no = 0; beg_img_no < images.Count; beg_img_no += m_batch_num) 
+            for (int beg_img_no = 0; beg_img_no < images.Count; beg_img_no += m_batch_num)
             {
                 int end_img_no = Math.Min(images.Count, beg_img_no + m_batch_num);
                 int batch_num = end_img_no - beg_img_no;
@@ -84,7 +84,7 @@ namespace OpenVinoSharp.Extensions.model
                 {
                     Mat mat = new Mat();
                     Cv2.CvtColor(images[ino], mat, ColorConversionCodes.BGR2RGB);
-                    mat = Resize.letterbox_img(mat, (int)m_input_size[2], out m_factors[ino- beg_img_no]);
+                    mat = Resize.letterbox_img(mat, (int)m_input_size[2], out m_factors[ino - beg_img_no]);
                     mat = Normalize.run(mat, true);
                     norm_img_batch.Add(mat);
                 }
@@ -106,9 +106,9 @@ namespace OpenVinoSharp.Extensions.model
         public List<DetResult> process_result(float[] result, int batch)
         {
             List<DetResult> re_result = new List<DetResult>();
-            for (int b = 0; b < batch; ++b) 
+            for (int b = 0; b < batch; ++b)
             {
-                Mat result_data = new Mat(4 + m_categ_nums, 8400, MatType.CV_32F,
+                Mat result_data = Mat.FromPixelData(4 + m_categ_nums, 8400, MatType.CV_32F,
                     Marshal.UnsafeAddrOfPinnedArrayElement(result, (4 + m_categ_nums) * m_output_length * b * 4), 4 * m_output_length);
                 result_data = result_data.T();
 
