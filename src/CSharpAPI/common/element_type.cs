@@ -48,7 +48,7 @@ namespace OpenVinoSharp
             /// <summary>
             /// Dynamic element type
             /// </summary>
-            dynamic,
+            dynamic = undefined,
             /// <summary>
             ///  boolean element type
             /// </summary>
@@ -124,7 +124,31 @@ namespace OpenVinoSharp
             /// <summary>
             /// u64 element type
             /// </summary>
-            u64
+            u64,
+            /// <summary>
+            /// nf4 element type
+            /// </summary>
+            NF4,                 
+            /// <summary>
+            /// f8e4m3 element type
+            /// </summary>
+            F8E4M3, 
+            /// <summary>
+            /// f8e5m2 element type
+            /// </summary>
+            F8E5M3,
+            /// <summary>
+            /// string element type
+            /// </summary>
+            STRING, 
+            /// <summary>
+            /// f4e2m1 element type
+            /// </summary>
+            F4E2M1, 
+            /// <summary>
+            /// f8e8m0 element type
+            /// </summary>
+            F8E8M0, 
         };
         /// <summary>
         /// [struct] Type information storage struct.
@@ -320,8 +344,6 @@ namespace OpenVinoSharp
             {
                 switch (type)
                 {
-                    case element.Type_t.undefined:
-                        return new TypeInfo(10000, false, false, false, "undefined", "undefined");
                     case element.Type_t.dynamic:
                         return new TypeInfo(0, false, false, false, "dynamic", "dynamic");
                     case element.Type_t.boolean:

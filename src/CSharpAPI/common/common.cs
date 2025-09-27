@@ -107,7 +107,7 @@ namespace OpenVinoSharp
         /// <summary>
         ///  Dynamic element type
         /// </summary>
-        DYNAMIC,
+        DYNAMIC = UNDEFINED,
         /// <summary>
         /// boolean element type
         /// </summary>
