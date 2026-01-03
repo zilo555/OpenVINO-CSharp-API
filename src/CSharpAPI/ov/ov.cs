@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using static OpenVinoSharp.NativeMethods;
 
 namespace OpenVinoSharp
 {    /// <summary>
@@ -9,6 +10,17 @@ namespace OpenVinoSharp
      /// </summary>
     public static partial class Ov
     {
+
+        public static void set_log_callback(LogCallbackDelegate func) 
+        {
+            NativeMethods.ov_util_set_log_callback(func);
+        }
+
+        public static void reset_log_callback()
+        {
+            NativeMethods.ov_util_reset_log_callback();
+        }
+
         /// <summary>
         /// Get version of OpenVINO.
         /// </summary>

@@ -29,6 +29,30 @@ namespace OpenVinoSharp
         public extern static void ov_version_free(
             IntPtr version);
 
+
+        /// <summary>
+        /// Callback function type for logging messages.
+        /// </summary>
+        /// <param name="message">The log message as a null-terminated C string.</param>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void LogCallbackDelegate(string message);
+
+        /// <summary>
+        /// Sets user log message handling callback.
+        /// </summary>
+        /// <param name="func"> The function pointer to user-defined message logging callback. Null pointer is accepted(no logging).</param>
+        [DllImport(dll_extern, EntryPoint = "ov_util_set_log_callback",
+            CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ov_util_set_log_callback(LogCallbackDelegate func);
+
+        /// <summary>
+        /// Resets log message handling callback to its default (standard output).
+        /// </summary>
+        [DllImport(dll_extern, EntryPoint = "ov_util_reset_log_callback",
+            CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ov_util_reset_log_callback();
+
+
         /// <summary>
         /// Constructs OpenVINO Core instance by default.
         /// See RegisterPlugins for more details.
