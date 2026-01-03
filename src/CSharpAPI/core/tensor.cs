@@ -2,11 +2,13 @@
 using OpenVinoSharp.preprocess;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace OpenVinoSharp
 {
@@ -306,7 +308,34 @@ namespace OpenVinoSharp
                 double[] data = (double[])Convert.ChangeType(input_data, typeof(double[]));
                 Marshal.Copy(data, 0, data_ptr, length);
             }
-            else 
+            else if (t == "System.UInt16")
+            {
+                // U16
+                ushort[] data = (ushort[])Convert.ChangeType(input_data, typeof(ushort[]));
+                short[] signed = new short[data.Length];
+                Buffer.BlockCopy(data, 0, signed, 0, data.Length * sizeof(ushort));
+                Marshal.Copy(signed, 0, data_ptr, length);
+            }
+            else if (t == "System.UInt32")
+            {
+                // U16
+                uint[] data = (uint[])Convert.ChangeType(input_data, typeof(uint[]));
+                int[] signed = new int[data.Length];
+                Buffer.BlockCopy(data, 0, signed, 0, data.Length * sizeof(uint));
+
+                Marshal.Copy(signed, 0, data_ptr, length);
+            }
+            else if (t == "System.UInt64")
+            {
+                // U16
+                ulong[] data = (ulong[])Convert.ChangeType(input_data, typeof(ulong[]));
+                long[] signed = new long[data.Length];
+                Buffer.BlockCopy(data, 0, signed, 0, data.Length * sizeof(ulong));
+
+
+                Marshal.Copy(signed, 0, data_ptr, length);
+            }
+            else
             {
                 Console.WriteLine("Data format error, not supported. Only double, flaot, int, long, shaort and byte data formats are supported");
             }
@@ -366,7 +395,32 @@ namespace OpenVinoSharp
         {
             set_data<double>(input_data);
         }
+        /// <summary>
+        /// Load the int type of data into the underlying host memory.
+        /// </summary>
+        /// <param name="input_data">Data to be loaded.</param>
+        public void set_data(uint[] input_data)
+        {
+            set_data<uint>(input_data);
+        }
 
+        /// <summary>
+        /// Load the long type of data into the underlying host memory.
+        /// </summary>
+        /// <param name="input_data">Data to be loaded.</param>
+        public void set_data(ulong[] input_data)
+        {
+            set_data<ulong>(input_data);
+        }
+
+        /// <summary>
+        /// Load the short type of data into the underlying host memory.
+        /// </summary>
+        /// <param name="input_data">Data to be loaded.</param>
+        public void set_data(ushort[] input_data)
+        {
+            set_data<ushort>(input_data);
+        }
         /// <summary>
         /// Read data of the specified type from the underlying host memory.
         /// </summary>
@@ -422,6 +476,36 @@ namespace OpenVinoSharp
                 Marshal.Copy(data_ptr, data, 0, length);
                 result = (T[])Convert.ChangeType(data, typeof(T[]));
                 return result;
+            }
+            else if (t == "System.UInt16")
+            {
+                short[] data = new short[length];
+                Marshal.Copy(data_ptr, data, 0, length);
+                ushort[] signed = new ushort[data.Length];
+                Buffer.BlockCopy(data, 0, signed, 0, data.Length * sizeof(short));
+                result = (T[])Convert.ChangeType(signed, typeof(T[]));
+                return result;
+              
+            }
+            else if (t == "System.UInt32")
+            {
+                int[] data = new int[length];
+                Marshal.Copy(data_ptr, data, 0, length);
+                uint[] signed = new uint[data.Length];
+                Buffer.BlockCopy(data, 0, signed, 0, data.Length * sizeof(int));
+                result = (T[])Convert.ChangeType(signed, typeof(T[]));
+                return result;
+
+            }
+            else if (t == "System.UInt64")
+            {
+                long[] data = new long[length];
+                Marshal.Copy(data_ptr, data, 0, length);
+                ulong[] signed = new ulong[data.Length];
+                Buffer.BlockCopy(data, 0, signed, 0, data.Length * sizeof(long));
+                result = (T[])Convert.ChangeType(signed, typeof(T[]));
+                return result;
+
             }
             else
             {
@@ -500,6 +584,38 @@ namespace OpenVinoSharp
             return get_data<double>(length);
 
         }
+        /// <summary>
+        /// Read data of the int type from the underlying host memory.
+        /// </summary>
+        /// <param name="length">The length of the read data.</param>
+        /// <returns>Read data.</returns>
+        public uint[] get_uint_data(int length)
+        {
+            return get_data<uint>(length);
 
+        }
+
+        /// <summary>
+        /// Read data of the long type from the underlying host memory.
+        /// </summary>
+        /// <param name="length">The length of the read data.</param>
+        /// <returns>Read data.</returns>
+        public ulong[] get_ulong_data(int length)
+        {
+            return get_data<ulong>(length);
+
+        }
+
+
+        /// <summary>
+        /// Read data of the short type from the underlying host memory.
+        /// </summary>
+        /// <param name="length">The length of the read data.</param>
+        /// <returns>Read data.</returns>
+        public ushort[] get_ushort_data(int length)
+        {
+            return get_data<ushort>(length);
+
+        }
     }
 }
